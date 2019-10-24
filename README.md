@@ -10,3 +10,10 @@ b.system函数
 ```
 system("echo you are great")
 ```
+
+## Perl 衍生程序最有名的是Circos
+- Circos用于全基因组绘图；
+- openSUSE配置最为方便，使用YaST补充GD库即可；
+- CentOS配置需要参考circos官网的GD安装说明，安装较旧的版本；
+- Deb系尚未成功安装过；
+- Windows下使用StrawberryPerl默认安装了所有相关库，但是调用方式奇怪，尚未运行成功；
