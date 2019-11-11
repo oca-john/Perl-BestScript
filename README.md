@@ -13,7 +13,5 @@ system("echo you are great")
 
 ## Perl 衍生程序最有名的是Circos
 - Circos用于全基因组绘图；
-- openSUSE配置最为方便，使用YaST补充GD库即可；
-- Kubuntu使用稳定内核的可以使用，自带的Muon包管理器完全可替代新立得，安装GD库没问题；
-- CentOS配置需要参考circos官网的GD安装说明，安装较旧的版本；
+- openSUSE配置最为方便，使用YaST补充GD库即可；Kubuntu稳定内核的可以使用，自带的Muon包管理器完全可替代新立得，安装GD库没问题；Ubuntu以及CentO的S配置需要参考circos官网的GD安装说明（或参考Circos圈图文件夹下的Circos-两种安装方式-ZHXI.md），安装较旧的版本；
 - Windows下使用StrawberryPerl默认安装了所有相关库，但是调用方式奇怪，尚未运行成功；
