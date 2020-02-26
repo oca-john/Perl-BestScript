@@ -15,14 +15,13 @@ print "hello world!";		# print strings directly, end a line with ";"
 
 ```
 0.工作方式，写脚本，运行
-1.简单的打印方式
-2.语法元素（数字、字符串、变量、运算符、转义符）
-3.语法结构（顺序执行、循环结构（for、while）、选择结构（if）、跳过与终止）
-4.文件读写
-5.正则表达式
-6.定义函数、调用函数
-7.组织模块、调用模块
-8.类、对象、继承性
+1.简单的打印方式,语法元素（数字、字符串、变量、运算符、转义符）
+2.语法结构（顺序执行、循环结构（for、while）、选择结构（if）、跳过与终止）
+3.文件读写
+4.正则表达式
+5.定义函数、调用函数
+6.组织模块、调用模块
+7.类、对象、继承性
 ```
 
 ## 1. Elements
@@ -161,10 +160,17 @@ sort{$b<=>$a} @k;					# out: (13,4,2,1)
 ### 1.6 Hash
 
 ```perl
-
+%a = ('mango'=>40,'banana'=>10,'cherry'=>20);	# define a hash
+%a = ('mango',40,'banana',10,'cherry',20)
+print $a{'mango'},"\n";				# get 40
+%b = ('y'=>"Hello",'z'=>4);
+$b{'x'} = 10;						# add an key-value pair, 'x'=>10
+keys($b);							# get all keys of hash
+values(%b);							# get all values of hash
+exists($b{'ex'});					# if 'ex' exists in %b
+delete($b{'x'});					# delete pairs, key = 'x'
+@c = @b{'x','y'};					# pick the values of 'x','y' into @c
 ```
-
-
 
 ## 2. Structure
 
@@ -199,4 +205,151 @@ $a = 2;{
 }
 print $a,",outer\n";
 ```
+
+### 2.2 while, until
+
+```perl
+$i = 1;
+while ($i<=4){						# condition $i<=4
+  print $i*14,"\n";					# output $i*14
+  $i++;
+}
+____________________________________
+$a = 5;								# while loop
+$b = 1;
+while ($a>0){
+  while ($b<=5){					# condition $a>0 and $b<=5
+    print "*"x$b,"\n";				# output "*"x$b
+    $b++;
+    $a--;
+  }
+}
+____________________________________
+last;								# exit the loop, as 'break' in C++ or Python
+$i = 5;
+LOOP_OUTER: while ($i>=0){			# LOOP_OUTER is the label of the out loop
+  $j = 5;
+  print "i is ",$i,"\n";
+  LOOP_INNER: while ($j>=0){
+    print "j is ",$j,"\n";
+    if($i==3){
+      last LOOP_OUTER;				# break/exit the LOOP_OUTER
+    }
+    $j--;
+  }
+  $i--;
+}
+____________________________________
+next;								# skip the loop, as 'continue' in C++ or Python
+$i = 5;
+while ($i>=0){
+  if ($i == 2){
+    $i--;							# if $i==2, just $i-1, and do nothing
+    next;							# pass/continue the current loop
+  }
+  print $i,"\n";
+  $i--;
+}
+____________________________________
+$i = 0;								# until loop
+until ($i>5){						# when $i>5 is False, do the loop
+  print $i,"\n";
+  $i = $i+1;
+}
+____________________________________
+$a = 1 ;							# do...while
+do{
+  print ( "Hello World\n" ) ;		# like the simple while loop
+  $a++;
+}while ( $a <= 10 );				# condition in last
+____________________________________
+$i = 5;								# redo
+while ($i>0){
+  print "i is $i\n";
+  if ($i == 1){					# $i==1, redo the loop, though $i>0 is False next time
+    $i--;
+    redo;							# redo the loop, not evaluating the condition
+  }
+  $i--;
+}
+____________________________________
+$i = 5;								# goto
+LOOP: while ($i>0){					# label the block as LOOP
+  if ($i == 2){
+    $i--;
+    goto LOOP;						# goto the LOOP, jump the last codes
+  }
+  print "i is $i\n";
+  $i--;
+}
+```
+
+### 2.3 For, Foreach
+
+```perl
+for ( $a = 1 ; $a <= 10 ; $a ++ )	# init, condition, step
+   {
+     print ( "Hello World\n" ) ;
+   }
+____________________________________
+for $a (1..5)						# for $a in range (1..5)
+   {
+     print $a,"\n";
+   }
+____________________________________
+@a = (1,3,5,6,9);
+foreach $b (@a)						# for $b eq every ele in the array
+   {
+     print $b,"\n";
+   }
+```
+
+## 3. File and Directory I/O
+
+### 3.1 File I/O
+
+```perl
+open (my $fh, "<", "test.txt") or die "Can't open < test.txt: $!";	# open file,<
+print readline($fh);									# read file line by line
+close($fh) or  "Couldn't close the file: $!";			# close file
+____________________________________
+open (my $fh, ">", "new.txt") or die "Can't open > test.txt: $!";	# open file,>
+print $fh "I am new file\n";							# write file
+close($fh) or  "Couldn't close the file: $!";
+open (my $fh, "<", "new.txt") or die "Can't open < test.txt: $!";	# reopen,<
+print readline($fh);
+close($fh) or  "Couldn't close the file: $!";
+____________________________________
+rename("dest.txt","best.txt");							# rename a file
+unlink("best.txt");										# delete a file
+____________________________________
+# here use the '$fh' as FILEHANDLE, use 'my' to make it as a local var
+```
+
+### 3.2 Directory
+
+```perl
+mkdir(new_dir) or die "Can't create directory $_";		# make dir
+chdir("/dir_name") or die "Can't create directory $_";	# cd to a dir
+rmdir(new_dir) or die "Can't create directory $_";		# remove dir
+____________________________________
+use Cwd;
+my $pwd = cwd();					# get the working dir, by cwd()
+print "$pwd\n";
+____________________________________
+opendir my $dir, "$pwd" or die "Cannot open directory: $!";
+my @files = readdir $dir;			# read the dir $dir(FILEHANDLE)
+foreach $i (@files){
+  print "$i\n";						# print filename
+}
+closedir $dir;
+____________________________________
+$pm = "*.pl *.pm";
+my @files = glob($pm);				# select files with .pl or .pm
+foreach $i (@files){
+  print "$i\n";						# print filename
+}
+```
+
+## 4. Regular expressions
 
