@@ -13,15 +13,15 @@ print "hello world!";		# print strings directly, end a line with ";"
 2. cd to the directory which include the script file.
 3. Type `perl file_l.pl`, to run.
 
-```
-0.工作方式，写脚本，运行
-1.简单的打印方式,语法元素（数字、字符串、变量、运算符、转义符）
-2.语法结构（顺序执行、循环结构（for、while）、选择结构（if）、跳过与终止）
-3.文件读写
-4.正则表达式
-5.定义函数、调用函数
-6.组织模块、调用模块
-7.类、对象、继承性
+```markdown
+0. 工作方式，写脚本，运行
+1. 简单的打印方式,语法元素（数字、字符串、变量、运算符、转义符）
+2. 语法结构（顺序执行、循环结构（for、while）、选择结构（if）、跳过与终止）
+3. 文件读写
+4. 正则表达式
+5. 定义函数、调用函数
+6. 组织模块、调用模块
+7. 类、对象、继承性
 ```
 
 ## 1. Elements
@@ -352,4 +352,186 @@ foreach $i (@files){
 ```
 
 ## 4. Regular expressions
+
+```perl
+Meta Chr:
+{}[]()^$.|*+?\				# they have special means, use \ to transform
+Operations:
+m, match; s, substitute; tr, translate;
+$str =~ /regular_expression/		# comman RE
+$str !~ m/regular_expression/		# '!~' means NOT, 'm' means match
+$str =~ s/old/new/i;				# substitute 'old' with 'new',case-insensitive
+$str =~ tr/[a-z]/[A-Z]/;			# trans [a-z] to [A-Z]
+```
+
+### 4.1 chr in special
+
+| chr  | means     | chr  | means          |
+| ---- | --------- | ---- | -------------- |
+| /w   | word      | /d   | digit, num     |
+| /W   | NOT word  | /D   | NOT digit, num |
+| /s   | space     | /t   | tab            |
+| /S   | NOT space | /n   | new line       |
+| /e   | escape    | /r   | return         |
+| .    | any chr   |      |                |
+
+### 4.2 group and select
+
+```perl 
+$str =~ m/(a|b|c)/;					# match 'a' or 'b' or 'c'
+```
+
+### 4.3 classes
+
+| class       | means            | class       | means          |
+| ----------- | ---------------- | ----------- | -------------- |
+| [abcde]     | a chr in [abcde] |             |                |
+| [0-9]       | 1 num            | [0-9]+      | 1 or multi num |
+| [A-Za-z]{3} | 3 chr            | [*!@#$%&()] | 1 chr in []    |
+
+### 4.4 times
+
+| chr  | times         | chr   | times             |
+| ---- | ------------- | ----- | ----------------- |
+| ?    | 0, 1 time     | {n}   | n times           |
+| +    | 1 - any times | {n,}  | n times, at least |
+| *    | 0 - any times | {n,m} | n - m times       |
+
+### 4.5 place
+
+| chr  | place           | chr  | place         |
+| ---- | --------------- | ---- | ------------- |
+| ^    | start of string | $    | end of string |
+
+```perl
+if ("car" =~ /[^c]ar/){				# NOT start wich c, '^' in [], means NOT
+  print "It is not a car.\n";		# aar, bar, dar will be match
+}
+else{
+  print "It is a car\n";
+}
+____________________________________
+@a = (1,'a',2,'b',3,'c',4,'d',5,'e');
+@num = grep(/\d/,@a);				# use grep to pick '\d', digit or num
+print "@num\n";						# get the array, (1,2,3,4,5)
+```
+
+## 5. Function
+
+```perl
+sub print_hello{					# define a function, by 'sub func_name{BLOCK}'
+	print "hello boy!";
+}
+print_hello();						# use the fuction, by 'func_name()'
+____________________________________
+sub is_even{
+  $x = $_[0];						# get the arg, by $_[0]
+  if ($x%2 == 0){					# $x%2 == 0, even
+    print "even\n";
+  }
+  else{
+    print "odd\n";					# $x%2 != 0, odd
+  }
+}
+is_even(2);							# even
+is_even(3);							# odd
+____________________________________
+sub sum{
+  $s = 0;
+  foreach $i (@_){					# get each arg, by foreach loop
+    $s = $s + $i;					# sum it
+  }
+  print "$s\n";						# output the result
+}
+sum(2,5);
+sum(5,2,3);
+____________________________________
+sub is_even{						# return a value
+  $x = $_[0];
+  if ($x%2 == 0){
+    return 1;						# return a num, can be any num
+  }
+  else{
+    return 0;						# return a num
+  }
+}
+print is_even(1),"\n";				# use the return num 0, 1, like True or False
+print is_even(2),"\n";
+____________________________________
+sub fac{							# recursion
+  my($x) = $_[0];
+  if ($x == 0 || $x == 1){			# input 0/1, output 1
+    return 1;
+  }
+  else{
+    return $x*fac($x-1);			# recursion, use the fac() many times
+  }
+}
+print fac(0),"\n";					# 1
+print fac(1),"\n";					# 1
+print fac(4),"\n";					# 4*3*2*1 = 24
+print fac(5),"\n";					# 5*4*3*2*1 = 120
+```
+
+## 6. Modules
+
+### 6.1 Declaring a module
+
+```perl
+#File name is p.pm
+use strict;
+use warnings;
+
+package p;							# Declaring package p
+
+sub Hello{
+  print "Hello\n";
+}
+
+1;
+```
+
+### 6.2 Use a module
+
+```perl
+use p;								# use the p.pm module
+use dir::p;							# if p.pm is under 'dir'
+p::Hello();							# use the function in p.pm
+```
+
+### 6.3 Use var from module
+
+```perl
+package b;							# Declaring package p
+
+our ($var_name);
+
+sub Hello{
+  print "Hello $var_name\n";
+}
+
+1;
+____________________________________
+use p;								# using package p
+
+$p::var_name = "Sam";				# using var_name from p
+p::Hello();							# Function Hello of p
+```
+
+### 6.4 BEGIN, END
+
+```perl
+BEGIN{								# block in the BEGIN
+  print "Starting...\n";
+}
+END{								# block in the END
+  print "END OF PROGRAM\n";
+}
+
+print "Hello World;\n";
+```
+
+## 7. Classes, Objects, Inheritance
+
+### 7.1 Constructor
 
