@@ -65,7 +65,7 @@ print sprintf ("my name is %s, and I am %i year old", "Sam",19)	# print string i
 									# %s means a string(Sam), %i means a int_num(19)
 ```
 
-## 1.2 Input
+### 1.2 Input
 
 ```perl
 print "what is your name?\n";
@@ -85,7 +85,7 @@ print $ARGV[0]+$ARGV[1], "\n";		# $ARGV[index] receive the arguments
 ​```
 ```
 
-## 1.3 Operators
+### 1.3 Operators
 
 ```perl
 0, "", undef						# all these three are FALSE
