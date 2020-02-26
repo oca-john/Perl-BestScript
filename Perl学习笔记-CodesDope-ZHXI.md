@@ -481,13 +481,11 @@ print fac(5),"\n";					# 5*4*3*2*1 = 120
 #File name is p.pm
 use strict;
 use warnings;
-
 package p;							# Declaring package p
 
 sub Hello{
   print "Hello\n";
 }
-
 1;
 ```
 
@@ -509,7 +507,6 @@ our ($var_name);
 sub Hello{
   print "Hello $var_name\n";
 }
-
 1;
 ____________________________________
 use p;								# using package p
@@ -534,4 +531,208 @@ print "Hello World;\n";
 ## 7. Classes, Objects, Inheritance
 
 ### 7.1 Constructor
+
+```perl
+use strict;
+use warnings;
+package Student;					# define the module
+
+sub new{							# constructor named 'new'
+  #the package name 'Student' is in the default array @_
+  #shift will take package name 'student' and assign it to variable 'class'
+  my $class = shift;				# produce a class
+  my $self = {						# produce a object
+    'name' => shift,
+    'roll_number' => shift
+  };
+  bless $self, $class;				# blessing self to be object in class
+  return $self;						# returning object from constructor
+}
+____________________________________
+my $obj = new Student("Sam",01);	# use the function 'new', 
+print "$obj->{'name'}\n";
+```
+
+### 7.2 Methods
+
+```perl
+package Square;						# define the module
+
+sub new{							# constructor named 'new'
+  my $class = shift;				# produce a class
+  my $self = {						# produce a object
+    'side' =>shift
+  };
+  bless $self, $class;				# blessing self to be object in class
+  return $self;						# returning object from constructor
+}
+
+sub getPerimeter{					# method in class
+  my $self = shift;
+  return 4*$self->{'side'};
+}
+
+sub getArea{						# method in class
+  my $self = shift;
+  return $self->{'side'}*$self->{'side'};
+}
+1;
+____________________________________
+use Square;							# use package
+my $obj = new Square(10);			# use constructor & function
+print $obj->getPerimeter(),"\n";
+print $obj->getArea(),"\n";
+```
+
+### 7.3 isa, can
+
+| function | means                                                      |
+| -------- | ---------------------------------------------------------- |
+| isa()    | check if an object is object of a class or not             |
+| can()    | check if an object or class has a particular method or not |
+
+```perl
+use Square;							# use package
+my $obj = new Square(10);
+print $obj->isa('Square'),"\n";
+print $obj->can('getArea'),"\n";
+```
+
+### 7.4  Creating default attribute
+
+```perl
+package Square;						# define the module
+
+sub new{
+  my $class = shift;
+  my $self = {
+    'side' =>shift || 1
+  };
+  bless $self, $class;
+  return $self;
+}
+
+sub getPerimeter{					# method in class
+  my $self = shift;
+  return 4*$self->{'side'};
+}
+
+sub getArea{
+  my $self = shift;
+  return $self->{'side'}*$self->{'side'};
+}
+1;
+____________________________________
+use Square;							# use package
+my $obj = new Square();
+print $obj->getPerimeter(),"\n";
+print $obj->getArea(),"\n";
+```
+
+### 7.5 Destructors
+
+```perl
+package Square;						# define the module
+
+sub new{
+  my $class = shift;
+  my $self = {
+    'side' =>shift || 1
+  };
+  bless $self, $class;
+  return $self;
+}
+
+sub DESTROY {
+    my $self = shift;
+    print "DESTROYED\n";
+}
+
+sub getPerimeter{					# method in class
+  my $self = shift;
+  return 4*$self->{'side'};
+}
+
+sub getArea{
+  my $self = shift;
+  return $self->{'side'}*$self->{'side'};
+}
+1;
+```
+
+### 7.6 Inheritance
+
+```perl
+#file is Student.pm
+use strict;
+use warnings;
+package Student;					# define the module
+
+sub new{
+  my $class = shift;
+  my $self = {
+    'name' => shift,
+    'roll_number' => shift
+  };
+  bless $self, $class;
+  return $self;
+}
+1;
+____________________________________
+#file is Btech.pm
+package Btech;						# define the module
+use parent 'Student';				# use package
+1;
+____________________________________
+use Btech;
+my $a = Btech->new("Sam",01);
+print "$a->{'name'}\n";
+print "$a->{'roll_number'}\n";
+```
+
+### 7.7  Method overriding
+
+```perl
+#This is Rectangle.pm
+use strict;
+use warnings;
+package Rectangle;					# define the module
+
+sub new{
+  my $class = shift;
+  my $self = {
+    'length' =>shift,
+    'breadth' =>shift
+  };
+  bless $self, $class;
+  return $self;
+}
+
+sub getPerimeter{
+  my $self = shift;
+  print "Perimeter of rectangle is ",2*($self->{'length'}+$self->{'breadth'}),"\n";
+}
+
+sub getArea{
+  my $self = shift;
+  return $self->{'length'}*$self->{'breadth'};
+}
+1;
+____________________________________
+#file is Square.pm
+package Square;						# define the module
+use parent 'Rectangle';				# use package
+
+sub getPerimeter{
+  my $self = shift;
+  print "Perimeter of square is ",4*($self->{'length'}),"\n";
+}
+1;
+____________________________________
+use Square;							# use package
+my $a = Rectangle->new(5,10);
+my $b = Square->new(4,4);
+$a->getPerimeter();
+$b->getPerimeter();
+```
 
