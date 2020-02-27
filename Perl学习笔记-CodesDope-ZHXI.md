@@ -368,11 +368,11 @@ $str =~ tr/[a-z]/[A-Z]/;			# trans [a-z] to [A-Z]
 
 | chr  | means     | chr  | means          |
 | ---- | --------- | ---- | -------------- |
-| /w   | word      | /d   | digit, num     |
-| /W   | NOT word  | /D   | NOT digit, num |
-| /s   | space     | /t   | tab            |
-| /S   | NOT space | /n   | new line       |
-| /e   | escape    | /r   | return         |
+| \w   | word      | \d   | digit, num     |
+| \W   | NOT word  | \D   | NOT digit, num |
+| \s   | space     | \t   | tab            |
+| \S   | NOT space | \n   | new line       |
+| \e   | escape    | \r   | return         |
 | .    | any chr   |      |                |
 
 ### 4.2 group and select
