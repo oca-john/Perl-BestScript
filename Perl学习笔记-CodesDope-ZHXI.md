@@ -330,6 +330,7 @@ ____________________________________
 
 ```perl
 mkdir(new_dir) or die "Can't create directory $_";		# make dir
+mkdir("new_dir") or die "Can't create dir $_";			# if you "use strict"
 chdir("/dir_name") or die "Can't create directory $_";	# cd to a dir
 rmdir(new_dir) or die "Can't create directory $_";		# remove dir
 ____________________________________
