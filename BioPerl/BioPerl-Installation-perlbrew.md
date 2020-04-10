@@ -1,4 +1,4 @@
-# BioPerl-安装
+# BioPerl-Installation-perlbrew
 
 ## 1.安装perlbrew
 ### a.在openSUSE上安装：
