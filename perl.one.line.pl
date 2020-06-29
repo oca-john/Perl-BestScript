@@ -1,9 +1,8 @@
+#!/usr/bin/perl
 ## perl one line
 
-```perl
 # 基本格式：
 perl -parameter 'commands' inputfile
-```
 
 ```perl
 -e 执行命令，也就是脚本	# 必须有的参数
