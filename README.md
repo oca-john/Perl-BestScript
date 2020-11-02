@@ -19,7 +19,7 @@ b. system 函数
 system("echo you are great")
 ```
 
-## 3. Perl的生物学库 BioPerl
+## 3. Perl 的生物学库 BioPerl
 - BioPerl 通过 cpanm（perlbrew）安装比较方便
 - 也可参考官方指南的操作安装
 
