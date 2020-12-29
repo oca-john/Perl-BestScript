@@ -18,6 +18,11 @@ b. system 函数
 ```
 system("echo you are great")
 ```
+c. -e 单行命令，从外部调用perl
+```
+将所有内容包裹在引号中
+perl -e 'print "hello xi\n";'
+```
 
 ## 3. Perl 的生物学库 BioPerl
 - BioPerl 通过 cpanm（perlbrew）安装比较方便
