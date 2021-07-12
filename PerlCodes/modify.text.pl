@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 # change all occurances of a string in a file to another string
 
 if ($#ARGV != 3) {
